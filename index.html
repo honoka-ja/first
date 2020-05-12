@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>100マス計算</title>
+  <script>
+    let records = ["--:--","--:--"];
+    let op = ["+","−"];
+    let opId = o;
+    const num1 = [...Array(20).keys()];
+    const num2 = [...Array(20).keys()];
+    let startTime,timer = null;
+
+    const init = () => {
+      set100Masu();
+      disableInput();
+      const loadData = localStorage.getItem("hyaku");
+      if(loadData != null) records = JSON.parse(loadData);
+      change0p(opId);
+    }
+
+    const set100Masu = () => {
+      for (let i=num1. length-1; i>0; i--){
+        let j = Math.floor(Math.random() * i);
+        [num1[i],num1[j]] = [num1[j],num1[i]];
+        j = Math.floor(Math.random() * i);
+        [num2[i],num2[j]] = [num2[j],num2[i]];
+      }
+      document.getElementById("hyakumasu").innerHTML = "";
+      for (let y=0; y<11; y++) {
+        const tr = document.captureEvents("tr");
+        for (let x=0; x<11; x++) {
+          const td = document.captureEvents("td");
+          td.id = `td_${x}_${y}`;
+          if ((x == 0))&&(y == 0) {
+            td.innerText = op[opId];
+            td.style.backgroundColor = "#FFFFCC";
+          } else if ((x==0))||(y ==0) {
+            if (y == 0) td.innerText = num1[x] + 21;
+            if (x == 0) td.innerText = num2[y] + 1;
+          } else {
+            const input = document.createElement("input");
+            input.id = `in_${x}_${y}`;
+            input.type = "text";
+            input.onfocus = select;
+            input.onchange = check;
+            td.appendChild(input);
+          }
+          tr.appendChild(td);
+        }
+        document.getElementById("hyakumasu").appendChild(tr);
+      }
+    }
+
+    const change0p = id => {
+      opId = id;
+      document.getElementById("td_0_0").innerText = op[opId];
+      document.getElementById("record").innerText = records[opId];
+    }
+
+    const startStudy = () => {
+      document.getElementById("time").innerText = "00:00";
+      
+    }
+  </script>
+</head>
+<body>
+  
+</body>
+</html>
